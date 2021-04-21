@@ -1,4 +1,5 @@
 # Single Switch Upgrade
+This will upgrade a single switch.
 
 Required Variables:
 apitoken
@@ -121,9 +122,7 @@ POST /api/v1/sites/:site_id/devices/upgrade
     "version":"20.3R1-S1.1",
     "reboot":true,
     "enable_p2p":false,
-    "device_ids: {
-        ["00000000-0000-0000-1000-78507cf7246c"]
-    }
+    "device_ids": ["00000000-0000-0000-1000-aabbccddeeff"]
 }
 ```
 
