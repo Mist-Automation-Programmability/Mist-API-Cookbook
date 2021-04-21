@@ -1,2 +1,2 @@
 # Mist-API-Cookbook
-Simple API workflows to perform common actions
+This cookbook is designed to show how to perform common tasks through the Mist API. There are no scripts, only generic recipes on how to accomplish specific tasks.  The goal is to enable folks to perfom these actions by providing a simple receipe of API calls to accomplish tasks.
