@@ -19,13 +19,13 @@ This will define a set of IP-Clos/Distribution-Access switches.
 ## EVPN Topology:
 In this topology, the EVPN extends down to the access layer.  All switches participate in the EVPN.
 
-::: mermaid
+```mermaid
 graph TD;
     Distribution-1-->Access-1;
     Distribution-1-->Access-2;
     Distribution-2-->Access-1;
     Distribution-2-->Access-2;
-:::
+```
 
 <div style="page-break-after: always"></div>
 
