@@ -6,7 +6,7 @@ This will upgrade a single switch.
 * `site_id`
 * `device_id`
 
-## Step 1:
+## Step 1: Get list of available firmware
 Get a list of available switch firmware versions.  This API call will retrieve a list of available switch firmware versions that you can install via Mist.
 
 By default, it will return only AP firmware to prevent breaking of the API for existing API consumers.  Adding query parameter of `?type=switch` will specify that you want a list of switch firmware.
@@ -45,8 +45,31 @@ RESPONSE:
     },
 ...
 ```
+## Step 3: Verify Switch is connected
+Before performing an upgrade on the switch, verify it is connected to the Mist cloud.
 
-## Step 2:
+```
+GET
+/api/v1/sites/:site_id/stats/devices/:device_id
+```
+
+Response:
+```JSON
+{
+    ...
+    "status": "connected",
+    ...
+```
+
+Alternatively, you can pull the stats for all switches at this site with the following:
+
+```
+GET
+/api/v1/sites/:site_id/stats/devices?type=switch
+```
+
+
+## Step 3:
 Perform upgrade on switch.  If you want the switch to reboot automatically, set the `reboot` key in the body.
 
 ```
@@ -61,7 +84,7 @@ BODY:
 }
 ```
 
-## Step 3: (Optional)
+## Step 4: (Optional)
 Trigger stat polling.  This enables the UI to update as the switch performs the upgrade steps
 
 ```
