@@ -13,12 +13,6 @@ This will define a single pair of collapsed core.
 
 EVPN-Topology:
 In this scenario the EVPN lives exclusively at the collapsed core. Trunks down to the access layer rely on ESI-LAG to handle the LAG.
-::: mermaid
-graph LR;
-    Distribution-1---Distribution-2
-    Distribution-2---Distribution-1
-
-:::
 
 <div style="page-break-after: always"></div>
 
