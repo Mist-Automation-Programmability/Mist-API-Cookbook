@@ -40,15 +40,7 @@ conversations with EX PLM, CRB is much more common than ERB.
 
 # Scenario 1: EVPN 3-Tier with CRB
 
-```mermaid
-%%{init: {'theme': 'default', "flowchart" : { "curve" : "basis" } } }%%
-graph TD;
-    subgraph EVPN
-        Core-1(Core-1 L3) & Core-2(Core-2 L3)---Distribution-1 & Distribution-2
-        Distribution-1 & Distribution-2---Access-1 & Access-2
-        end
-    
-```
+
 ![Image](./img/45e18d64b0284ba3b2086c1676c13a52.png)
 <div style="page-break-after: always">
 
@@ -538,15 +530,7 @@ Access-2 will have:
 <div style="page-break-after: always"></div>
 
 # Scenario 2: EVPN 3-Tier with ERB
-```mermaid
-%%{init: {'theme': 'default', "flowchart" : { "curve" : "natural" } } }%%
-graph TD
-    subgraph EVPN
-        Core-1 & Core-2---Distribution-1(Distribution-1 L3) & Distribution-2(Distribution-2 L3)
-        Distribution-1 & Distribution-2---Access-1 & Access-2
-        end
-    
-```
+
 ![Image](./img/dac17f057c9d4b8a9c6b30132940a81f.png)
 
 ## Step 1: (Define Networks/VRFs/PortUsage)
