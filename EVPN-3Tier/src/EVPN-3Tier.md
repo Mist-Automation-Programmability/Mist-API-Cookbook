@@ -45,8 +45,9 @@ conversations with EX PLM, CRB is much more common than ERB.
 graph TD;
     subgraph EVPN
         Core-1(Core-1 L3) & Core-2(Core-2 L3)---Distribution-1 & Distribution-2
+        Distribution-1 & Distribution-2---Access-1 & Access-2
         end
-    Distribution-1 & Distribution-2---|ESI-LAG|Access-1 & Access-2
+    
 ```
 <div style="page-break-after: always">
 
@@ -541,8 +542,9 @@ Access-2 will have:
 graph TD
     subgraph EVPN
         Core-1 & Core-2---Distribution-1(Distribution-1 L3) & Distribution-2(Distribution-2 L3)
+        Distribution-1 & Distribution-2---Access-1 & Access-2
         end
-    Distribution-1 & Distribution-2---|ESI-LAG|Access-1 & Access-2
+    
 ```
 ## Step 1: (Define Networks/VRFs/PortUsage)
 
