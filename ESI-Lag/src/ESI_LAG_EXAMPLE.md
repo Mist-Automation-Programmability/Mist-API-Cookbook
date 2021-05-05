@@ -16,6 +16,11 @@ In this scenario the EVPN lives exclusively at the collapsed core. Trunks down t
 
 <div style="page-break-after: always"></div>
 
+```mermaid
+graph TD;
+    Collapsed_Core-1 & Collapsed_Core-2---|ESI-LAG|Access-1 & Access-2
+        
+```
 
 ## Step 1: (Define Networks/VRFs)
 This payload configures 2 networks (`vlan101`, `vlan102`) that go into the `internal_vrf`.  The internal VRF also include a static route.  In addition, we define a port_usage of `core_access` to describe the trunk link between the core and the access layer.  This is a simple trunk, as there is no VXLAN running to the access layer.
