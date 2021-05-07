@@ -40,14 +40,7 @@ conversations with EX PLM, CRB is much more common than ERB.
 
 # Scenario 1: EVPN 3-Tier with CRB
 
-```mermaid
-%%{init: {'theme': 'default', "flowchart" : { "curve" : "basis" } } }%%
-graph TD;
-    subgraph EVPN
-        Core-1(Core-1 L3) & Core-2(Core-2 L3)---Distribution-1 & Distribution-2
-        end
-    Distribution-1 & Distribution-2---|ESI-LAG|Access-1 & Access-2
-```
+![Image](./img/9addb6173ef34f90b0e68ec6f4497bd1.png)
 <div style="page-break-after: always">
 
 ## Step 1: (Define Networks/VRFs/PortUsage)
@@ -383,7 +376,7 @@ will have:
         "ge-0/0/2": {
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -424,7 +417,7 @@ Distribution-1 will have:
             "description": "Link to Access-2",
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -449,14 +442,9 @@ With ESI-LAG, the access layer switches are configured as a normal AE.  They are
 
 
 # Scenario 2: EVPN 3-Tier with ERB
-```mermaid
-%%{init: {'theme': 'default', "flowchart" : { "curve" : "natural" } } }%%
-graph TD
-    subgraph EVPN
-        Core-1 & Core-2---Distribution-1(Distribution-1 L3) & Distribution-2(Distribution-2 L3)
-        end
-    Distribution-1 & Distribution-2---|ESI-LAG|Access-1 & Access-2
-```
+
+![Image](./img/8e1006d923874a2ca88f252e0cc73d16.png)
+
 ## Step 1: (Define Networks/VRFs/PortUsage)
 
 ### VRF
@@ -790,7 +778,7 @@ will have:
             "description": "Link to Access-2",
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -832,7 +820,7 @@ Distribution-1 will have:
             "description": "Link to Access-2",
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }

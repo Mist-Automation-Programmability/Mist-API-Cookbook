@@ -1,7 +1,7 @@
 # EVPN (3-Tier Network) with ESI-LAG to Access Layer
 
-This will define a 3-Tier network (Core/Distribution/Access) with
-ESI-LAG to the access layer. </br>
+This will define a 3-Tier network (Core/Distribution/Access) with ESI-LAG to the access layer.
+</br>
 
 ## Note: This is an early draft of the API for EVPN-VXLAN. Things could change prior to going GA.
 
@@ -40,8 +40,16 @@ conversations with EX PLM, CRB is much more common than ERB.
 
 # Scenario 1: EVPN 3-Tier with CRB
 
-![Image](./img/668cc81436fc4aacab7515f3a44541ec.png)
+```mermaid
+%%{init: {'theme': 'default', "flowchart" : { "curve" : "basis" } } }%%
+graph TD;
+    subgraph EVPN
+        Core-1(Core-1 L3) & Core-2(Core-2 L3)---Distribution-1 & Distribution-2
+        end
+    Distribution-1 & Distribution-2---|ESI-LAG|Access-1 & Access-2
+```
 
+![Image](./img/9addb6173ef34f90b0e68ec6f4497bd1.png)
 <div style="page-break-after: always">
 
 ## Step 1: (Define Networks/VRFs/PortUsage)
@@ -65,16 +73,14 @@ link over the ESI-Lag to the access layer switch.
 This can also be applied to a network template and applied to the site,
 this example is using site settings only.
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Site Settings
-
-        PUT:
-        /api/v1/sites/:site_id/setting
-
-``` json
+```
+    PUT:
+    /api/v1/sites/:site_id/setting
+```
+```JSON
 {
     "evpn_options": {
     "overlay": {
@@ -115,26 +121,24 @@ this example is using site settings only.
             "mtu": 9200
         } }  }
 ```
-
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ## Step 2: Apply Router ID/IRBs/VRF to Core switches
 
-In this section, we are going to configure 3 things. \* Router ID \* IRB
-configurations for the L3 Gateways. \* Enable VRF for devices that need
-VRF
+In this section, we are going to configure 3 things.
+* Router ID
+* IRB configurations for the L3 Gateways.
+* Enable VRF for devices that need VRF
 
-For the CBR scenario, we are going to configure the IRBs and VRFs on the
-Core switches.
+For the CBR scenario, we are going to configure the IRBs and VRFs on the Core switches.
 
 ### Scenario 1: Core-1 Config
+```
+PUT:
+/api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
+```
 
-    PUT:
-    /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
-
-``` json
+```JSON
 {
 "router_id": "192.168.255.11",
 "other_ip_configs": {
@@ -151,20 +155,21 @@ Core switches.
     },
 "vrf_config": {
     "enabled": true
-    }
+	}
 }
 ```
+<div style="page-break-after: always"></div>
 
-<div style="page-break-after: always">
-
-</div>
 
 ### Scenario 1: Core-2 Config
 
-    PUT:
-    /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
+```
+PUT:
+/api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
+```
 
-``` json
+
+```JSON
 {
 "router_id": "192.168.255.12",
    "other_ip_configs": {
@@ -181,10 +186,9 @@ Core switches.
     },
 "vrf_config": {
     "enabled": true
-    }
+	}
 }
 ```
-
 <div style="page-break-after: always"></div>
 
 ## Step 3: Apply Router ID config to each Distribution/Spine switches.
@@ -192,25 +196,23 @@ Core switches.
 In CRB, you will apply only a router_id to the Distribution switches.
 
 ### Scenario 1: Distribution-1 Config
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
+```
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
-
-``` json
+```JSON
 {
     "router_id": "192.168.255.13"
 }
 ```
+### Scenario 1: Distribution-2 Config
+```
+    PUT: 
+    /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
+```
 
-
-</div>
-
-### Distribution-2 Config
-
-        PUT: 
-        /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
-
-``` json
+```JSON
 {
     "router_id": "192.168.255.14"
 }
@@ -220,13 +222,14 @@ In CRB, you will apply only a router_id to the Distribution switches.
 
 ## Step 4: Build EVPN Topology:
 
-This step defines which switches will participate in the EVPN and what
-their role is.
+This step defines which switches will participate in the EVPN and what their role is.  
 
-        POST
-        /api/v1/sites/:site_id/devices/evpn_topology
+```
+    POST
+    /api/v1/sites/:site_id/devices/evpn_topology
+```
 
-``` json
+```JSON
 {
     "overwrite": true,
     "switches": [{
@@ -248,16 +251,13 @@ their role is.
     ]
 }
 ```
-
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Record Output from EVPN topology
 
 Sample OUTPUT:
 
-``` json
+```JSON
 {
     "switches": [
         {
@@ -304,12 +304,9 @@ Sample OUTPUT:
 }
 ```
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ## Step 5: Match up the EVPN topology uplinks and downlinks.
-
 Each switch will have uplinks,downlinks or both. Each Core switch will
 have evpn_downlinks Each Distribution switch will have evpn_uplinks
 
@@ -319,10 +316,12 @@ The EVPN Topolgy will tell you which links go where.
 
 ### Core-1 Port Config
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
+```
 
-``` json
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -334,19 +333,20 @@ The EVPN Topolgy will tell you which links go where.
 
 Based on the configuration and output from the EVPN_Topology, Core-1
 will have:
-* `ge-0/0/22` connected to `Distribution-1`
-* `ge-0/0/23` connected to `Distribution-2`
+* `ge-0/0/22` connected to `Distribution-1`  
+* `ge-0/0/23` connected to `Distribution-2`   
 
-<div style="page-break-after: always">
+<div style="page-break-after: always"></div>
 
-</div>
 
 ### Core-2 Port Config
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
+```
 
-``` json
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -357,20 +357,20 @@ will have:
 ```
 
 Based on the configuration and output from the EVPN_Topology, Core-2
-will have: 
-* `ge-0/0/22` connected to `Distribution-1` 
-* `ge-0/0/23` connected to`Distribution-2`
+will have:
+* `ge-0/0/22` connected to `Distribution-1`  
+* `ge-0/0/23` connected to`Distribution-2`  
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Distribution-1 Port Config
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
+```
 
-``` json
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -385,7 +385,7 @@ will have:
         "ge-0/0/2": {
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -394,22 +394,22 @@ will have:
 ```
 
 Based on the configuration and output from the EVPN_Topology,
-Distribution-1 will have: 
-* `ge-0/0/22` connected to `Core-1`
-* `ge-0/0/23` connected to `Core-2` 
+Distribution-1 will have:
+* `ge-0/0/22` connected to `Core-1`  
+* `ge-0/0/23` connected to `Core-2`  
 * `ge-0/0/1` to connect to `Access-1` (Static ae_idx for esi-lag consistency)  
-* `ge-0/0/2` to connect to `Access-2` (Static ae_idx for esi-lag consistency)
+* `ge-0/0/2` to connect to `Access-2` (Static ae_idx for esi-lag consistency)  
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Distribution-2 Port Config
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
+```
 
-``` json
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -426,7 +426,7 @@ Distribution-1 will have:
             "description": "Link to Access-2",
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -436,27 +436,31 @@ Distribution-1 will have:
 
 Based on the configuration and output from the EVPN_Topology,
 Distribution-2 will have:
-* `ge-0/0/22` connected to `Core-1`
-* `ge-0/0/23` connected to `Core-2`
-* `ge-0/0/1` to connect to `Access-1` (Static ae_idx for esi-lag consistency) 
-* `ge-0/0/2` to connect to `Access-2` (Static ae_idx for esi-lag consistency)
+* `ge-0/0/22` connected to `Core-1`  
+* `ge-0/0/23` connected to `Core-2`  
+* `ge-0/0/1` to connect to `Access-1` (Static ae_idx for esi-lag consistency)  
+* `ge-0/0/2` to connect to`Access-2` (Static ae_idx for esi-lag consistency)  
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ## Step 6: Access Layer Config:
 
-With ESI-LAG, the access layer switches are configured as a normal AE.
-They are not aware of the EVPN or the ESI-LAG.
+With ESI-LAG, the access layer switches are configured as a normal AE.  They are not aware of the EVPN or the ESI-LAG.
 
-<div style="page-break-after: always">
+<div style="page-break-after: always"></div>
 
-</div>
 
 # Scenario 2: EVPN 3-Tier with ERB
+```mermaid
+%%{init: {'theme': 'default', "flowchart" : { "curve" : "natural" } } }%%
+graph TD
+    subgraph EVPN
+        Core-1 & Core-2---Distribution-1(Distribution-1 L3) & Distribution-2(Distribution-2 L3)
+        end
+    Distribution-1 & Distribution-2---|ESI-LAG|Access-1 & Access-2
+```
 
-![Image](./img/afb83ff1b15c49fd99351a0ef2b33a20.png)
+![Image](./img/8e1006d923874a2ca88f252e0cc73d16.png)
 
 ## Step 1: (Define Networks/VRFs/PortUsage)
 
@@ -479,16 +483,17 @@ link over the ESI-Lag to the access layer switch.
 This can also be applied to a network template and applied to the site,
 this example is using site settings only.
 
-<div style="page-break-after: always">
+<div style="page-break-after: always"></div>
 
-</div>
 
 ### Site Settings
 
-        PUT:
-        /api/v1/sites/:site_id/setting
+```
+    PUT:
+    /api/v1/sites/:site_id/setting
+```
 
-``` json
+```JSON
 {
     "evpn_options": {
     "overlay": {
@@ -529,7 +534,6 @@ this example is using site settings only.
             "mtu": 9200
         } }  }
 ```
-
 <div style="page-break-after: always">
 
 ## Step 2: Apply Router ID/IRBs/VRF to Distribution Switches.
@@ -544,11 +548,12 @@ In ERB we will apply these to the Distribution Switches.
 <div style="page-break-after: always">
 
 ### Distribution-1 Config
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
+```
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
-
-``` json
+```JSON
 {
 "router_id": "192.168.255.11",
 "other_ip_configs": {
@@ -569,14 +574,15 @@ In ERB we will apply these to the Distribution Switches.
 }
 ```
 
+
 <div style="page-break-after: always">
 
 ### Distribution-2 Config
-
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
-
-``` json
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
+```
+```JSON
 {
 "router_id": "192.168.255.12",
    "other_ip_configs": {
@@ -601,15 +607,15 @@ In ERB we will apply these to the Distribution Switches.
 
 
 ## Step 3: Apply Router ID config to each Core switches.
-
 In ERB, you will apply only a router_id to the Core switches.
 
 ### Core-1 Config
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
+```
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
-
-``` json
+```JSON
 {
     "router_id": "192.168.255.13"
 }
@@ -617,30 +623,29 @@ In ERB, you will apply only a router_id to the Core switches.
 
 ### Core-2 Config
 
-        PUT: 
-        /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
-
-``` json
+```
+    PUT: 
+    /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
+```
+```JSON
 {
     "router_id": "192.168.255.14"
 }
 ```
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ## Step 4: Build EVPN Topology:
+This step defines which switches will participate in the EVPN and what their role is.  
 
-This step defines which switches will participate in the EVPN and what
-their role is.
 
 ### Build EVPN Topology
+```
+    POST
+    /api/v1/sites/:site_id/devices/evpn_topology
+```
 
-        POST
-        /api/v1/sites/:site_id/devices/evpn_topology
-
-``` json
+```JSON
 {
     "overwrite": true,
     "switches": [{
@@ -662,12 +667,11 @@ their role is.
     ]
 }
 ```
-
 <div style="page-break-after: always">
 
 ### Record Output from EVPN topology
 
-``` json
+```JSON
 {
     "switches": [
         {
@@ -714,9 +718,7 @@ their role is.
 }
 ```
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ## Step 5: Match up the EVPN topology uplinks and downlinks.
 
@@ -726,11 +728,11 @@ have evpn_downlinks Each Distribution switch will have evpn_uplinks
 The EVPN Topolgy will tell you which links go where.
 
 ### Core-1 Ports
-
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
-
-``` json
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Core-1_device_id }}
+```
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -742,19 +744,17 @@ The EVPN Topolgy will tell you which links go where.
 
 Based on the configuration and output from the EVPN_Topology, Core-1
 will have:
-* `ge-0/0/22` connected to `Distribution-1`
-* `ge-0/0/23` connected to `Distribution-2`
+* `ge-0/0/22` connected to `Distribution-1`  
+* `ge-0/0/23` connected to `Distribution-2`  
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Core-2 Ports
-
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
-
-``` json
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Core-2_device_id }}
+```
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -764,21 +764,21 @@ will have:
 }
 ```
 
-Based on the configuration and output from the EVPN_Topology, Core-1
+Based on the configuration and output from the EVPN_Topology, Core-2
 will have:
-* `ge-0/0/22` connected to `Distribution-1`
-* `ge-0/0/23` connected to `Distribution-2`
+* `ge-0/0/22` connected to `Distribution-1`  
+* `ge-0/0/23` connected to `Distribution-2`  
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Distribution-1 Ports
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-1_device_id }}
+```
 
-``` json
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -795,7 +795,7 @@ will have:
             "description": "Link to Access-2",
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -803,23 +803,24 @@ will have:
 }
 ```
 
+
 Based on the configuration and output from the EVPN_Topology,
 Distribution-1 will have:
-* `ge-0/0/22` connected to `Core-1`
-* `ge-0/0/23` connected to `Core-2` 
-* `ge-0/0/1` to connect to `Access-1` (Static ae_idx for esi-lag consistency)
-* `ge-0/0/2` to connect to `Access-2` (Static ae_idx for esi-lag consistency)
+* `ge-0/0/22` connected to `Core-1`  
+* `ge-0/0/23` connected to `Core-2`  
+* `ge-0/0/1` to connect to `Access-1` (Static ae_idx for esi-lag consistency)  
+* `ge-0/0/2` to connect to `Access-2` (Static ae_idx for esi-lag consistency)  
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ### Distribution-2 Ports
 
-        PUT:
-        /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
+```
+    PUT:
+    /api/v1/sites/:site_id/devices/{{ Distribution-2_device_id }}
+```
 
-``` json
+```JSON
 {
     "port_config": {
         "ge-0/0/22-23": {
@@ -836,7 +837,7 @@ Distribution-1 will have:
             "description": "Link to Access-2",
             "usage": "distribution-access",
             "aggregate": true,
-            "ae_idx": 1,
+            "ae_idx": 2,
             "esilag": true
             },
         }
@@ -851,15 +852,10 @@ Distribution-2 will have:
 * `ge-0/0/1` to connect to `Access-1` (Static ae_idx for esi-lag consistency)</br>
 * `ge-0/0/2` to connect to `Access-2` (Static ae_idx for esi-lag consistency)</br>
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>
 
 ## Step 6: Access Layer Config:
 
-With ESI-LAG, the access layer switches are configured as a normal AE.
-They are not aware of the EVPN or the ESI-LAG.
+With ESI-LAG, the access layer switches are configured as a normal AE.  They are not aware of the EVPN or the ESI-LAG.
 
-<div style="page-break-after: always">
-
-</div>
+<div style="page-break-after: always"></div>

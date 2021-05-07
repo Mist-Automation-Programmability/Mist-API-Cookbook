@@ -1,5 +1,5 @@
-# Single Site ESI-Lag (collapsed-core)
-This will define a single pair of collapsed core.
+# EVPN Multihoming (collapsed-core with ESI-LAG)
+This will define a single pair of collapsed core switches and EVPN Multihoming (ESI-LAG) to the access layer.
 </br>
 
 ## Note: This is an early draft of the API  for EVPN-VXLAN.  Things could change prior to going GA.
@@ -16,11 +16,7 @@ In this scenario the EVPN lives exclusively at the collapsed core. Trunks down t
 
 <div style="page-break-after: always"></div>
 
-```mermaid
-graph TD;
-    Collapsed_Core-1 & Collapsed_Core-2---|ESI-LAG|Access-1 & Access-2
-        
-```
+![Image](./img/febb08ab989848c1bdb2f75c2ba02605.png)
 
 ## Step 1: (Define Networks/VRFs)
 This payload configures 2 networks (`vlan101`, `vlan102`) that go into the `internal_vrf`.  The internal VRF also include a static route.  In addition, we define a port_usage of `core_access` to describe the trunk link between the core and the access layer.  This is a simple trunk, as there is no VXLAN running to the access layer.
@@ -111,6 +107,18 @@ PUT:
 ```JSON
 {
 "router_id": "192.168.255.11",
+"other_ip_configs": {
+        "vlan101": {
+            "type": "static",
+            "ip": "192.168.101.2",
+            "netmask": "255.255.255.0"
+        },
+        "vlan102": {
+            "type": "static",
+            "ip": "192.168.102.2",
+            "netmask": "255.255.255.0"
+        }
+    },
 "vrf_config": {
     "enabled": true
 	}
@@ -125,6 +133,18 @@ PUT:
 ```JSON
 {
 "router_id": "192.168.255.12",
+   "other_ip_configs": {
+        "vlan101": {
+            "type": "static",
+            "ip": "192.168.101.3",
+            "netmask": "255.255.255.0"
+        },
+        "vlan102": {
+            "type": "static",
+            "ip": "192.168.102.3",
+            "netmask": "255.255.255.0"
+        }
+    },
 "vrf_config": {
     "enabled": true
 	}
@@ -152,8 +172,46 @@ POST
 	]
 }
 ```
-### Record Output from EVPN topology
+## Step 4: Record the EVPN Topology Output:
 
+```JSON
+{
+    "switches": [
+        {
+            "mac": "{{ Core-1_mac_address }}",
+            "evpn_id": 1,
+            "model": "xxxxxx-48Y",
+            "router_id": "192.168.255.11",
+            "role": "collapsed-core",
+            "uplinks": [
+                "{{ Core-2_mac_address }}"
+            ],
+            "downlinks": [
+                "{{ Core-2_mac_address }}"
+            ],
+            "downlink_ips": [
+                "10.255.240.2"
+            ]
+        },
+        {
+            "mac": "{{ Core-2_mac_address }}",
+            "evpn_id": 2,
+            "model": "xxxxxx-48Y",
+            "router_id": "192.168.255.12",
+            "role": "collapsed-core",
+            "uplinks": [
+                "{{ Core-1_mac_address }}"
+            ],
+            "downlinks": [
+                "{{ Core-1_mac_address }}"
+            ],
+            "downlink_ips": [
+                "10.255.240.4"
+            ]
+        }
+    ]
+}
+```
 You will need to identify which switches have uplinks/downlinks.  In this scenario, both switches should have 1 uplink and 1 downlink.
 
 ## Step 4: Match up the EVPN topology uplinks and downlinks.
