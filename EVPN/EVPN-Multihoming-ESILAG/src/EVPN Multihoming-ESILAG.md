@@ -67,7 +67,7 @@ PUT:
       }
     }
     "port_usages": {
-      "core-access": {
+      "core_access": {
             "mode": "trunk",
             "disabled": false,
             "port_network": null,
@@ -252,7 +252,7 @@ PUT:
         },
         "ge-0/0/0": {
           "usage": "core_access",
-          "aggregate": true,
+          "aggregated": true,
           "ae_idx": 1,
           "esilag": true
         }
@@ -274,7 +274,7 @@ PUT:
           },
         "ge-0/0/y": {
           "usage": "core_access",
-          "aggregate": true,
+          "aggregated": true,
           "ae_idx": 1,
           "esilag": true
         }
