@@ -58,7 +58,7 @@ PUT:
               }
           }
       }
-    }
+    }.
     "port_usages": {
       "core-access": {
             "mode": "trunk",
