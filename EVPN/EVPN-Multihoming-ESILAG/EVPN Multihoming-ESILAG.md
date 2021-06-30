@@ -294,3 +294,6 @@ If you have multiple uplinks/downlinks you are configuring, they must be put in 
 ## Step 5:
 Configure uplink on access-layer switch as a normal aggregation in the mist UI.
 
+## Warning regarding UI messages
+Until the UI is updated to support EVPN, you may receive errors about profiles missing.  Specifically `evpn_uplink` and `evpn_downlink`.  DO NOT CREATE THESE PROFILES.  The logic is handled in the backend for these two profiles, creating them will cause issues.
+

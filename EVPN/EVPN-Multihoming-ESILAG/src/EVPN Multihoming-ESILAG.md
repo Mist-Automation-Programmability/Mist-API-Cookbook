@@ -6,6 +6,8 @@ This will define a single pair of collapsed core switches and ESI-LAG to the acc
 </br></br>
 
 ### Required Variables:
+
+* `site_id` 
 * `device_id` (Core-1)
 * `device_id` (Core-2)
 * `mac_address` (Core-1)
@@ -90,18 +92,18 @@ PUT:
     },
     "evpn_options": {
         "overlay": {
-            "as": 65000
+            "as": {{overlay_as}}
         },
             "underlay": {
-                "as_base": 65001,
-                "subnet": "10.255.240.0/20"
+                "as_base": {{underlay_as}},
+                "subnet": "{{x.x.x.x/xx}}"
             }
     }
 }
 ```
 <div style="page-break-after: always"></div>
 
-## Step 2: Apply EVPN config to each collapse-core switches
+## Step 2: Create IRBs/Loopback and enable VRF
 In this section we are applying the router_id to each switch as well as enabling vrf for the two collapsed-core switches.
 
 <div style="page-break-after: always"></div>
@@ -248,7 +250,7 @@ PUT:
           "usage": "evpn_uplink"
           },
         "ge-0/0/22": {
-          "usage": "downlink"
+          "usage": "evpn_downlink"
         },
         "ge-0/0/0": {
           "usage": "core_access",

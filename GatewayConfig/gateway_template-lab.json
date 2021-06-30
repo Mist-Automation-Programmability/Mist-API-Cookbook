@@ -1,0 +1,89 @@
+{
+    "name": "JakeLab_Gateway",
+
+    "networks": {},
+
+    "port_config": {
+        "ge-0/0/0": {
+            "usage": "wan",
+            "name": "wan0",
+
+            "wan_type": "broadband",
+            "ip_config": {
+                "type": "dhcp"
+            }
+        },
+        "ge-0/0/1-5": {
+            "usage": "lan",
+            "networks": ["corporate", "wireless", "guest", "management", "iot"],
+            "port_network": "management"
+        }
+    },
+
+    "ip_configs": {
+        "guest": {
+            "ip": "10.253.12.1",
+            "netmask": "/24"
+        },
+        "corporate": {
+            "ip": "10.253.10.1",
+            "netmask": "/24"
+        },
+        "wireless": {
+            "ip": "10.253.11.1",
+            "netmask": "/24"
+        },
+        "management": {
+            "ip": "10.253.5.1",
+            "netmask": "/24"
+        },
+        "iot": {
+            "ip": "10.253.17.1",
+            "netmask": "/24"
+        }
+    },
+
+    "dhcpd_config": {
+        "enabled": true,
+        "guest": {
+            "type": "local",
+            "ip_start": "10.253.12.10",
+            "ip_end": "10.253.12.200",                
+            "gateway": "10.253.12.1",
+            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
+            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+        },
+        "corporate": {
+            "type": "local",
+            "ip_start": "10.253.10.10",
+            "ip_end": "10.253.10.200",                
+            "gateway": "10.253.10.1",
+            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
+            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+        },
+        "wireless": {
+            "type": "local",
+            "ip_start": "10.253.11.10",
+            "ip_end": "10.253.11.200",                
+            "gateway": "10.253.11.1",
+            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
+            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+        },
+        "management": {
+            "type": "local",
+            "ip_start": "10.253.5.10",
+            "ip_end": "10.253.5.200",                
+            "gateway": "10.253.5.1",
+            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
+            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+        },
+        "iot": {
+            "type": "local",
+            "ip_start": "10.253.17.10",
+            "ip_end": "10.253.17.200",                
+            "gateway": "10.253.17.1",
+            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
+            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+        }
+    }
+}
