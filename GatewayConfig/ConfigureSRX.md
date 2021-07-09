@@ -128,10 +128,16 @@ For the LAN, we are configurating these as tagged ports, so the configuration wi
                 "type": "dhcp"
             }
         },
-        "ge-0/0/1-5": {
+        "ge-0/0/1-3": {
             "usage": "lan",
             "networks": ["corporate", "wireless", "guest"],
             "port_network": "corporate"
+        },
+        "ge-0/0/4-5": {
+            "usage": "lan",
+            "networks": ["corporate", "wireless", "guest"],
+            "port_network": "corporate",
+            "aggregated": true
         }
     }
 }
