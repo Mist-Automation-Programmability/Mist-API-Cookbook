@@ -7,6 +7,9 @@ This is currenty not GA, and therefore anything can change prior to GA release. 
 
 In this example we will have a basic setup where port `ge-0/0/0` will connect to a DHCP enabled WAN and port `ge-0/0/1` will connect to the LAN which is our EX2300C-12P.
 
+![Image](./img/GatewayConfig.png)
+<div style="page-break-after: always">
+
 ## Build Gateway Template Payload
 For this example everything will go into the Gateway template.  If we had networks that crossed sites, we could define these at the org/networks level.  We could also define items at the site or device level, but for the simplicity of this guide, we are going create it all at the gatewaytemplate level.
 
