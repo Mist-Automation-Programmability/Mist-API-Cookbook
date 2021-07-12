@@ -5,6 +5,8 @@ This document outlines the basics of how to configure a branch SRX with a basic 
 ## Disclaimer:
 This is currenty not GA, and therefore anything can change prior to GA release.  Also, this has only been tested in staging and not in production environments.  Do not use for production environments without talking with Mist product management team.
 
+
+## Topology:
 In this example we will have a basic setup where port `ge-0/0/0` will connect to a DHCP enabled WAN and port `ge-0/0/1` will connect to the LAN which is our EX2300C-12P.
 
 ![Image](./img/GatewayConfig.png)
