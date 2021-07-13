@@ -77,6 +77,7 @@ For each of our LAN networks, we need to define the IP address information in th
             "ip": "10.253.12.1",
             "netmask": "/24"
         }
+    }
 }
 
 ```

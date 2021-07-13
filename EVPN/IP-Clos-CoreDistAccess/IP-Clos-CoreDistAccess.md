@@ -270,77 +270,86 @@ This step defines which switches will participate in the EVPN and what their rol
 Sample OUTPUT:
 
 ```JSON
-{
-    "switches": [
-        {
-            "mac": "{{ Core-1_mac_address }}",
-            "evpn_id": 1,
-            "model": "xxxxxx-24P",
-            "router_id": "192.168.255.11",
-            "role": "core",
-            "downlinks": [
-                "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
-            "downlink_ips": ["10.255.240.2", "10.255.240.4"]},
-        {
-            "mac": "{{ Core-2_mac_address }}",
-            "evpn_id": 2,
-            "model": "xxxxxxx-24P",
-            "router_id": "192.168.255.12",
-            "role": "access",
-            "downlinks": [
-                "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
-            "downlink_ips": ["10.255.240.6", "10.255.240.8"]},
-        {
-            "mac": "{{ Distribution-1_mac_address }}",
-            "evpn_id": 3,
-            "model": "xxxxxx-48P",
-            "router_id": "192.168.255.14",
-            "role": "distribution",
-            "uplinks": [
-                "{{ Core-1_mac_address }}",
-                "{{ Core-2_mac_address }}"],
-            "downlinks": [
-                "{{ Access-1_mac_address }}",
-                "{{ Access-2_mac_address }}"],
-            "downlink_ips": ["10.255.240.10", "10.255.240.12"]},
-        },
-        {
-            "mac": "{{ Distribution-2_mac_address }}",
-            "evpn_id": 4,
-            "model": "xxxxxx-48P",
-            "router_id": "192.168.255.13",
-            "role": "distribution",
-            "uplinks": [
-                "{{ Core-1_mac_address }}",
-                "{{ Core-2_mac_address }}"],
-            "downlinks": [
-                "{{ Access-1_mac_address }}",
-                "{{ Access-2_mac_address }}"],
-            "downlink_ips": ["10.255.240.14", "10.255.240.16"]},
-        },
-        {
-            "mac": "{{ Access-1_mac_address }}",
-            "evpn_id": 5,
-            "model": "xxxxxx-48P",
-            "router_id": "192.168.255.14",
-            "role": "access",
-            "uplinks": [
-                "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
-        },
-        {
-            "mac": "{{ Access-2_mac_address }}",
-            "evpn_id": 6,
-            "model": "xxxxxx-48P",
-            "router_id": "192.168.255.13",
-            "role": "access",
-            "uplinks": [
-                "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
-        }
-    ]
+{{
+	"switches": [{
+			"mac": "{{ Core-1_mac_address }}",
+			"evpn_id": 1,
+			"model": "xxxxxx-24P",
+			"router_id": "192.168.255.11",
+			"role": "core",
+			"downlinks": [
+				"{{ Distribution-1_mac_address }}",
+				"{{ Distribution-2_mac_address }}"
+			],
+			"downlink_ips": ["10.255.240.2", "10.255.240.4"]
+		},
+		{
+			"mac": "{{ Core-2_mac_address }}",
+			"evpn_id": 2,
+			"model": "xxxxxxx-24P",
+			"router_id": "192.168.255.12",
+			"role": "access",
+			"downlinks": [
+				"{{ Distribution-1_mac_address }}",
+				"{{ Distribution-2_mac_address }}"
+			],
+			"downlink_ips": ["10.255.240.6", "10.255.240.8"]
+		},
+		{
+			"mac": "{{ Distribution-1_mac_address }}",
+			"evpn_id": 3,
+			"model": "xxxxxx-48P",
+			"router_id": "192.168.255.14",
+			"role": "distribution",
+			"uplinks": [
+				"{{ Core-1_mac_address }}",
+				"{{ Core-2_mac_address }}"
+			],
+			"downlinks": [
+				"{{ Access-1_mac_address }}",
+				"{{ Access-2_mac_address }}"
+			],
+			"downlink_ips": ["10.255.240.10", "10.255.240.12"]
+		},
+		{
+			"mac": "{{ Distribution-2_mac_address }}",
+			"evpn_id": 4,
+			"model": "xxxxxx-48P",
+			"router_id": "192.168.255.13",
+			"role": "distribution",
+			"uplinks": [
+				"{{ Core-1_mac_address }}",
+				"{{ Core-2_mac_address }}"
+			],
+			"downlinks": [
+				"{{ Access-1_mac_address }}",
+				"{{ Access-2_mac_address }}"
+			],
+			"downlink_ips": ["10.255.240.14", "10.255.240.16"]
+		},
+		{
+			"mac": "{{ Access-1_mac_address }}",
+			"evpn_id": 5,
+			"model": "xxxxxx-48P",
+			"router_id": "192.168.255.14",
+			"role": "access",
+			"uplinks": [
+				"{{ Distribution-1_mac_address }}",
+				"{{ Distribution-2_mac_address }}"
+			]
+		},
+		{
+			"mac": "{{ Access-2_mac_address }}",
+			"evpn_id": 6,
+			"model": "xxxxxx-48P",
+			"router_id": "192.168.255.13",
+			"role": "access",
+			"uplinks": [
+				"{{ Distribution-1_mac_address }}",
+				"{{ Distribution-2_mac_address }}"
+			]
+		}
+	]
 }
 ```
 
@@ -420,7 +429,6 @@ will have:
             },
         "ge-0/0/1-2": {
             "usage": "evpn_downlink"
-            }
         }
     }
 }
@@ -450,7 +458,6 @@ Distribution-1 will have:
             },
         "ge-0/0/1-2": {
             "usage": "evpn_downlink"
-            }
         }
     }
 }
@@ -480,7 +487,6 @@ Distribution-2 will have:
             },
         "ge-0/0/0": {
             "usage": "distribution-access"
-            }
         }
     }
 }
@@ -508,7 +514,6 @@ Access-1 will have:
             },
         "ge-0/0/0": {
             "usage": "distribution-access"
-            }
         }
     }
 }

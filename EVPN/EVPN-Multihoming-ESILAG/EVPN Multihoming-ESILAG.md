@@ -285,7 +285,7 @@ If you have multiple uplinks/downlinks you are configuring, they must be put in 
 {
     "port_config": {
         "ge-0/0/10-11": {"usage": "evpn_uplink"},
-        "ge-0/0/20-21": {"usage": "evpn_downlink"},
+        "ge-0/0/20-21": {"usage": "evpn_downlink"}
     }
 }
 ```
