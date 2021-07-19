@@ -1,89 +1,187 @@
 {
     "name": "JakeLab_Gateway",
-
-    "networks": {},
-
+    "networks": {
+        "corporate": {
+            "vlan_id": 310,
+            "subnet": "10.253.10.0/24",
+            "gateway": "10.253.10.1",
+            "isolation": false,
+            "internet_access": {
+                "enabled": true,
+                "restricted": false
+            }
+        },
+        "wireless": {
+            "vlan_id": 311,
+            "subnet": "10.253.11.0/24",
+            "gateway": "10.253.11.1",
+            "isolation": false,
+            "internet_access": {
+                "enabled": true,
+                "restricted": false
+            }
+        },
+        "guest": {
+            "vlan_id": 312,
+            "subnet": "10.253.12.0/24",
+            "gateway": "10.253.12.1",
+            "isolation": false,
+            "internet_access": {
+                "enabled": true,
+                "restricted": true
+            }
+        },
+        "iot": {
+            "vlan_id": 317,
+            "subnet": "10.253.17.0/24",
+            "gateway": "10.253.17.1",
+            "isolation": false,
+            "internet_access": {
+                "enabled": true,
+                "restricted": false
+            }
+        },
+        "net-management": {
+            "vlan_id": 305,
+            "subnet": "10.253.5.0/24",
+            "gateway": "10.253.5.1",
+            "isolation": false,
+            "internet_access": {
+                "enabled": true,
+                "restricted": false
+            }
+        }
+    },
     "port_config": {
         "ge-0/0/0": {
             "usage": "wan",
             "name": "wan0",
-
             "wan_type": "broadband",
             "ip_config": {
                 "type": "dhcp"
             }
         },
-        "ge-0/0/1-5": {
+        "ge-0/0/1-3": {
             "usage": "lan",
-            "networks": ["corporate", "wireless", "guest", "management", "iot"],
-            "port_network": "management"
+            "networks": [
+                "corporate",
+                "wireless",
+                "guest",
+                "net-management",
+                "iot"
+            ],
+            "port_network": "net-management"
+        },
+        "ge-0/0/4-5": {
+            "usage": "lan",
+            "networks": [
+                "corporate",
+                "wireless",
+                "guest",
+                "net-management",
+                "iot"
+            ],
+            "port_network": "net-management",
+            "aggregated": true
         }
     },
-
     "ip_configs": {
         "guest": {
+            "type": "static",
             "ip": "10.253.12.1",
             "netmask": "/24"
         },
         "corporate": {
+            "type": "static",
             "ip": "10.253.10.1",
             "netmask": "/24"
         },
         "wireless": {
+            "type": "static",
             "ip": "10.253.11.1",
             "netmask": "/24"
         },
-        "management": {
+        "net-management": {
+            "type": "static",
             "ip": "10.253.5.1",
             "netmask": "/24"
         },
         "iot": {
+            "type": "static",
             "ip": "10.253.17.1",
             "netmask": "/24"
         }
     },
-
     "dhcpd_config": {
-        "enabled": true,
-        "guest": {
+        "net-management": {
             "type": "local",
-            "ip_start": "10.253.12.10",
-            "ip_end": "10.253.12.200",                
-            "gateway": "10.253.12.1",
-            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
-            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+            "ip_start": "10.253.5.100",
+            "ip_end": "10.253.5.200",
+            "gateway": "10.253.5.1",
+            "dns_servers": [
+                "1.1.1.1",
+                "4.2.2.2"
+            ],
+            "dns_suffix": [
+                ".mist.local",
+                ".mist.com"
+            ]
         },
         "corporate": {
             "type": "local",
-            "ip_start": "10.253.10.10",
-            "ip_end": "10.253.10.200",                
+            "ip_start": "10.253.10.100",
+            "ip_end": "10.253.10.200",
             "gateway": "10.253.10.1",
-            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
-            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+            "dns_servers": [
+                "1.1.1.1",
+                "4.2.2.2"
+            ],
+            "dns_suffix": [
+                ".mist.local",
+                ".mist.com"
+            ]
         },
         "wireless": {
             "type": "local",
-            "ip_start": "10.253.11.10",
-            "ip_end": "10.253.11.200",                
+            "ip_start": "10.253.11.100",
+            "ip_end": "10.253.11.200",
             "gateway": "10.253.11.1",
-            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
-            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+            "dns_servers": [
+                "1.1.1.1",
+                "4.2.2.2"
+            ],
+            "dns_suffix": [
+                ".mist.local",
+                ".mist.com"
+            ]
         },
-        "management": {
+        "guest": {
             "type": "local",
-            "ip_start": "10.253.5.10",
-            "ip_end": "10.253.5.200",                
-            "gateway": "10.253.5.1",
-            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
-            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+            "ip_start": "10.253.12.100",
+            "ip_end": "10.253.12.200",
+            "gateway": "10.253.12.1",
+            "dns_servers": [
+                "1.1.1.1",
+                "4.2.2.2"
+            ],
+            "dns_suffix": [
+                ".mist.local",
+                ".mist.com"
+            ]
         },
         "iot": {
             "type": "local",
-            "ip_start": "10.253.17.10",
-            "ip_end": "10.253.17.200",                
+            "ip_start": "10.253.17.100",
+            "ip_end": "10.253.17.200",
             "gateway": "10.253.17.1",
-            "dns_servers": [ "8.8.8.8", "4.4.4.4" ],
-            "dns_suffix": [ ".remote.todsfromds.com", ".todsfromds.com" ]
+            "dns_servers": [
+                "1.1.1.1",
+                "4.2.2.2"
+            ],
+            "dns_suffix": [
+                ".mist.local",
+                ".mist.com"
+            ]
         }
     }
 }
