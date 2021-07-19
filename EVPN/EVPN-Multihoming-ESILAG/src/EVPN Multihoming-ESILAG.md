@@ -23,7 +23,6 @@ In this scenario the EVPN lives exclusively at the collapsed core. Trunks down t
 graph TD;
     Core-1---Access-1 & Access-2
     Core-2---Access-1 & Access-2
-    Core-1---Core-2
 ```
 ![Image](./img/febb08ab989848c1bdb2f75c2ba02605.png)
 
