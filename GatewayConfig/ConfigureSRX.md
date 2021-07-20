@@ -153,7 +153,7 @@ For the LAN, we are configurating these as tagged ports, so the configuration wi
 Now we combine this into a single payload and push to the cloud.  You can see the gateway-template-lab.json file for the full payload used.
 
 ```
-POST /api/v1/orgs/:org_id/gatewaytemplate
+POST /api/v1/orgs/:org_id/gatewaytemplates
 ```
 
 the response that comes back should include the `id` of this new gateway template.
