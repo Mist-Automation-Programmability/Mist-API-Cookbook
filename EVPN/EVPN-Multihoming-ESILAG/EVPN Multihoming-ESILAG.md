@@ -167,7 +167,7 @@ POST
 		},
 		{
 			"mac": "{{ Core-2_mac }}",
-			"role": "collapse-core"
+			"role": "collapsed-core"
 		}
 	]
 }
