@@ -226,7 +226,7 @@ This step defines which switches will participate in the EVPN and what their rol
 
 ```
     POST
-    /api/v1/sites/:site_id/devices/evpn_topology
+    /api/v1/sites/:site_id/devices/evpn_topologies
 ```
 
 ```JSON
@@ -642,11 +642,12 @@ This step defines which switches will participate in the EVPN and what their rol
 ### Build EVPN Topology
 ```
     POST
-    /api/v1/sites/:site_id/devices/evpn_topology
+    /api/v1/sites/:site_id/devices/evpn_topologies
 ```
 
 ```JSON
 {
+    "name": "CF_coredist",
     "overwrite": true,
     "switches": [{
             "mac": "{{ Core-1_mac_address }}",

@@ -155,11 +155,12 @@ PUT:
 ## Step 3: Build EVPN Topology:
 ```
 POST
-/api/v1/sites/:site_id/devices/evpn_topology
+/api/v1/sites/:site_id/devices/evpn_topologies
 ```
 
 ```JSON
 {
+    "name": "CC",
 	"overwrite": true,
 	"switches": [{
 			"mac": "{{ Core-1_mac }}",
