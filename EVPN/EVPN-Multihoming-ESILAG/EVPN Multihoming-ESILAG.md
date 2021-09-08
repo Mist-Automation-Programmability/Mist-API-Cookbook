@@ -154,8 +154,13 @@ PUT:
 
 ## Step 3: Build EVPN Topology:
 ```
-POST
-/api/v1/sites/:site_id/devices/evpn_topologies
+    POST
+    /api/v1/sites/:site_id/evpn_topologies
+```
+### Previous Call
+```
+    POST
+    /api/v1/sites/:site_id/devices/evpn_topology
 ```
 
 ```JSON

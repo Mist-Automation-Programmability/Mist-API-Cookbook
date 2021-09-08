@@ -239,7 +239,7 @@ This step defines which switches will participate in the EVPN and what their rol
 
 ```
     POST
-    /api/v1/sites/:site_id/devices/evpn_topologies
+    /api/v1/sites/:site_id/evpn_topologies
 ```
 
 ```JSON
