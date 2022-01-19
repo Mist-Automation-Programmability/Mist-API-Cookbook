@@ -26,7 +26,7 @@ This will define a 3-Tier network (Core/Distribution/Access) with EVPN from Core
 ## EVPN Topology:
 
 In this topology we are doing EVPN between the Core, Distribution
-and Access layer switches.  Due to the IP-Clos nature of this fabric, L3 presence will happen at the access layer.  This is the supported architecture from Juniper.  
+and Access layer switches.  Due to the IP-Clos nature of this fabric, L3 presence will happen at the access layer. 
 
 See this document for details:
 https://www.juniper.net/documentation/en_US/release-independent/nce/topics/concept/nce-evpn-vxlan-campus-arch.html
@@ -45,6 +45,9 @@ the `internal_vrf`. The internal VRF also include a static route.
 ### EVPN Options
 
 We also specify the EVPN option, but these are not required.
+
+### Networks:
+For networks, we need to provide the `gateway` in order for the API to render virtual gateway.  If you do not include `gateway` in the network definition, it will not configure the IRBs with the virtual-gateway.
 
 ### Port Usages
 
@@ -230,7 +233,12 @@ This step defines which switches will participate in the EVPN and what their rol
 
 ```
     POST
-    /api/v1/sites/:site_id/devices/evpn_topologies
+    /api/v1/sites/:site_id/evpn_topologies
+```
+### Previous Call
+```
+    POST
+    /api/v1/sites/:site_id/devices/evpn_topology
 ```
 
 ```JSON
@@ -357,10 +365,9 @@ Sample OUTPUT:
 <div style="page-break-after: always"></div>
 
 ## Step 5: Match up the EVPN topology uplinks and downlinks.
-In the EVPN topology output each switch will have uplinks,downlinks or both. Each Core switch will
-have evpn_downlinks Each Distribution switch will have both evpn_uplinks and evpn_downlinks.  Access switches will have uplinks only.
+In the EVPN topology output each switch will have uplinks,downlinks or both. Each Core switch will have evpn_downlinks Each Distribution switch will have both evpn_uplinks and evpn_downlinks.  Access switches will have uplinks only.
 
-The EVPN Topolgy will tell you which links go where.
+The EVPN Topolgy will tell you which links go where.  Remember that each link should have 2 seperate ends.  
 
 In cases where there are multiple of the same type (uplinks/downlinks), the order is important.  If the EVPN topology says that Core 1 has 2 downlinks (Distribution-1 and Distribution-2), it's important that you list those in the appropriate order and in a single entry.
 
