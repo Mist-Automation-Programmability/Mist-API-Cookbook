@@ -415,26 +415,37 @@ Sample OUTPUT:
             "model": "xxxxxx-24P",
             "router_id": "192.168.255.11",
             "role": "core",
+            "pod": null
+
             "downlinks": [
                 "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
-            "downlink_ips": ["10.255.240.2", "10.255.240.4"]},
+                "{{ Distribution-2_mac_address }}",
+                "{{ Distribution-3_mac_address }}",
+                "{{ Distribution-4_mac_address }}"
+                ],
+            "downlink_ips": ["10.255.240.2", "10.255.240.4", "10.255.240.6", "10.255.240.8"]},
         {
             "mac": "{{ Core-2_mac_address }}",
             "evpn_id": 2,
             "model": "xxxxxxx-24P",
             "router_id": "192.168.255.12",
-            "role": "access",
+            "role": "core",
+            "pod": null
             "downlinks": [
                 "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
-            "downlink_ips": ["10.255.240.6", "10.255.240.8"]},
+                "{{ Distribution-2_mac_address }}",
+                "{{ Distribution-3_mac_address }}",
+                "{{ Distribution-4_mac_address }}"
+                ],
+            "downlink_ips": ["10.255.240.10", "10.255.240.12", "10.255.240.14", "10.255.240.16"]
+        },
         {
             "mac": "{{ Distribution-1_mac_address }}",
             "evpn_id": 3,
             "model": "xxxxxx-48P",
-            "router_id": "192.168.255.14",
+            "router_id": "192.168.255.3",
             "role": "distribution",
+            "pod": 2,
             "uplinks": [
                 "{{ Core-1_mac_address }}",
                 "{{ Core-2_mac_address }}"],
@@ -449,6 +460,7 @@ Sample OUTPUT:
             "model": "xxxxxx-48P",
             "router_id": "192.168.255.13",
             "role": "distribution",
+            "pod": 2,
             "uplinks": [
                 "{{ Core-1_mac_address }}",
                 "{{ Core-2_mac_address }}"],
@@ -463,6 +475,7 @@ Sample OUTPUT:
             "model": "xxxxxx-48P",
             "router_id": "192.168.255.14",
             "role": "access",
+            "pod": 2,
             "uplinks": [
                 "{{ Distribution-1_mac_address }}",
                 "{{ Distribution-2_mac_address }}"],
@@ -473,9 +486,63 @@ Sample OUTPUT:
             "model": "xxxxxx-48P",
             "router_id": "192.168.255.13",
             "role": "access",
+            "pod": 2,
             "uplinks": [
                 "{{ Distribution-1_mac_address }}",
-                "{{ Distribution-2_mac_address }}"],
+                "{{ Distribution-2_mac_address }}"]
+        },
+        {
+            "mac": "{{ Distribution-3_mac_address }}",
+            "evpn_id": 3,
+            "model": "xxxxxx-48P",
+            "router_id": "192.168.255.3",
+            "role": "distribution",
+            "pod": 3,
+            "uplinks": [
+                "{{ Core-1_mac_address }}",
+                "{{ Core-2_mac_address }}"],
+            "downlinks": [
+                "{{ Access-3_mac_address }}",
+                "{{ Access-4_mac_address }}"],
+            "downlink_ips": ["10.255.240.10", "10.255.240.12"]
+        },
+        {
+            "mac": "{{ Distribution-4_mac_address }}",
+            "evpn_id": 4,
+            "model": "xxxxxx-48P",
+            "router_id": "192.168.255.4",
+            "role": "distribution",
+            "pod": 3,
+            "uplinks": [
+                "{{ Core-1_mac_address }}",
+                "{{ Core-2_mac_address }}"],
+            "downlinks": [
+                "{{ Access-3_mac_address }}",
+                "{{ Access-4_mac_address }}"],
+            "downlink_ips": ["10.255.240.14", "10.255.240.16"]
+        },
+        {
+            "mac": "{{ Access-3_mac_address }}",
+            "evpn_id": 5,
+            "model": "xxxxxx-48P",
+            "router_id": "192.168.255.14",
+            "role": "access",
+            "pod": 3,
+            "uplinks": [
+                "{{ Distribution-3_mac_address }}",
+                "{{ Distribution-4_mac_address }}"],
+        },
+        {
+            "mac": "{{ Access-4_mac_address }}",
+            "evpn_id": 6,
+            "model": "xxxxxx-48P",
+            "router_id": "192.168.255.13",
+            "role": "access",
+            "pod": 3,
+            "uplinks": [
+                "{{ Distribution-3_mac_address }}",
+                "{{ Distribution-4_mac_address }}"
+                ]
         }
     ]
 }
